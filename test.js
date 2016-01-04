@@ -28,7 +28,7 @@ test('cwd', async t => {
 
 	await execa('./cli.js', ['hello.js', 'dest', '--cwd', path.join(t.context.tmp, 'cwd')]);
 
-	t.is(read(t.context.tmp, 'cwd/hello.js'), read(path.join(t.context.tmp, 'cwd/dest/hello.js')));
+	t.is(read(t.context.tmp, 'cwd/hello.js'), read(t.context.tmp, 'cwd/dest/hello.js'));
 });
 
 test('keep path structure with flag "--parents"', async t => {
@@ -38,7 +38,7 @@ test('keep path structure with flag "--parents"', async t => {
 
 	await execa('./cli.js', [path.join(t.context.tmp, 'cwd/hello.js'), t.context.tmp, '--parents']);
 
-	t.is(read(t.context.tmp, 'cwd/hello.js'), read(path.join(t.context.tmp, t.context.tmp, 'cwd/hello.js')));
+	t.is(read(t.context.tmp, 'cwd/hello.js'), read(t.context.tmp, t.context.tmp, 'cwd/hello.js'));
 });
 
 test('rename filenames but not filepaths', async t => {
@@ -48,7 +48,7 @@ test('rename filenames but not filepaths', async t => {
 
 	await execa('./cli.js', [path.join(t.context.tmp, 'hello.js'), path.join(t.context.tmp, 'dest'), '--rename=hi.js']);
 
-	t.is(read(t.context.tmp, 'hello.js'), read(path.join(t.context.tmp, 'dest/hi.js')));
+	t.is(read(t.context.tmp, 'hello.js'), read(t.context.tmp, 'dest/hi.js'));
 });
 
 test('overwrite files by default', async t => {
