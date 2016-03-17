@@ -31,7 +31,7 @@ fn(cli.input, cli.input.pop(), {
 	rename: cli.flags.rename,
 	parents: cli.flags.parents,
 	overwrite: cli.flags.overwrite !== false,
-    nodir: cli.flags.nodir,
+	nodir: cli.flags.nodir,
 	nonull: true
 }).catch(err => {
 	if (err.name === 'CpyError') {
