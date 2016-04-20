@@ -68,11 +68,11 @@ test('do not copy files in the ngated glob patterns', async t => {
 	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
 	fs.writeFileSync(path.join(t.context.tmp, 'src/hello.js'), 'console.log("hello");');
 	fs.writeFileSync(path.join(t.context.tmp, 'src/hello.jsx'), 'console.log("world");');
-	fs.writeFileSync(path.join(t.context.tmp, 'src/hello.es6'), 'console.log("world");');
+	fs.writeFileSync(path.join(t.context.tmp, 'src/hello.es2015'), 'console.log("world");');
 
-	await execa('./cli.js', ['src/*.*', '!src/*.jsx', '!src/*.es6', 'dest', '--cwd', t.context.tmp]);
+	await execa('./cli.js', ['src/*.*', '!src/*.jsx', '!src/*.es2015', 'dest', '--cwd', t.context.tmp]);
 
 	t.is(read(t.context.tmp, 'dest/hello.js'), 'console.log("hello");');
 	t.false(pathExists.sync(path.join(t.context.tmp, 'dest/hello.jsx')));
-	t.false(pathExists.sync(path.join(t.context.tmp, 'dest/hello.es6')));
+	t.false(pathExists.sync(path.join(t.context.tmp, 'dest/hello.es2015')));
 });
