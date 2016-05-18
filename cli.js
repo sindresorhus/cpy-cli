@@ -10,7 +10,7 @@ const cli = meow(`
 	Options
 	  --no-overwrite       Don't overwrite the destination
 	  --parents            Preserve path structure
-	  --cwd=<dir>          Working directory for source files
+	  --cwd=<dir>          Working directory for files
 	  --rename=<filename>  Rename all <source> filenames to <filename>
 
 	<source> can contain globs if quoted
