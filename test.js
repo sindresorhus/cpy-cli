@@ -14,7 +14,7 @@ test.beforeEach(t => {
 });
 
 test('missing file operands', t => {
-	t.throws(execa('./cli.js'), /`src` and `dest` required/);
+	t.throws(execa('./cli.js'), /`files` and `destination` required/);
 });
 
 test('source file does not exist', t => {
@@ -62,7 +62,7 @@ test('overwrite files by default', async t => {
 	t.is(read(t.context.tmp, 'dest/hello.js'), 'console.log("hello");');
 });
 
-test('do not copy files in the ngated glob patterns', async t => {
+test('do not copy files in the negated glob patterns', async t => {
 	fs.mkdirSync(t.context.tmp);
 	fs.mkdirSync(path.join(t.context.tmp, 'src'));
 	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
