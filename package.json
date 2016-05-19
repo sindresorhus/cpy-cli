@@ -54,8 +54,8 @@
   },
   "devDependencies": {
     "ava": "*",
-    "execa": "^0.1.1",
-    "path-exists": "^2.1.0",
+    "execa": "^0.4.0",
+    "path-exists": "^3.0.0",
     "tempfile": "^1.1.1",
     "xo": "*"
   },
