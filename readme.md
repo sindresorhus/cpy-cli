@@ -31,6 +31,7 @@ $ cpy --help
     --parents            Preserve path structure
     --cwd=<dir>          Working directory for files
     --rename=<filename>  Rename all <source> filenames to <filename>
+    --no-dir             Do not match directories
 
   <source> can contain globs if quoted
 
@@ -39,7 +40,7 @@ $ cpy --help
     $ cpy 'src/*.png' '!src/goat.png' dist
 
     Copy all .html files inside src folder into dist and preserve path structure
-    $ cpy '**/*.html' '../dist/' --cwd=src --parents
+    $ cpy '**/*.html' '../dist/' --cwd=src --parents --no-dir
 ```
 
 

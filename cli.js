@@ -12,6 +12,7 @@ const cli = meow(`
 	  --parents            Preserve path structure
 	  --cwd=<dir>          Working directory for files
 	  --rename=<filename>  Rename all <source> filenames to <filename>
+	  --no-dir             Do not match directories
 
 	<source> can contain globs if quoted
 
@@ -20,7 +21,7 @@ const cli = meow(`
 	  $ cpy 'src/*.png' '!src/goat.png' dist
 
 	  Copy all .html files inside src folder into dist and preserve path structure
-	  $ cpy '**/*.html' '../dist/' --cwd=src --parents
+	  $ cpy '**/*.html' '../dist/' --cwd=src --parents --no-dir
 `, {
 	string: ['_']
 });
@@ -30,7 +31,8 @@ fn(cli.input, cli.input.pop(), {
 	rename: cli.flags.rename,
 	parents: cli.flags.parents,
 	overwrite: cli.flags.overwrite !== false,
-	nonull: true
+	nonull: true,
+	nodir: cli.flags.noDir !== false
 }).catch(err => {
 	if (err.name === 'CpyError') {
 		console.error(err.message);
