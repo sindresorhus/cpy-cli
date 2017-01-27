@@ -41,6 +41,15 @@ test('keep path structure with flag "--parents"', async t => {
 	t.is(read(t.context.tmp, 'cwd/hello.js'), read(t.context.tmp, t.context.tmp, 'cwd/hello.js'));
 });
 
+test('ignore directories with flag "--nodir"', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'nodir'));
+	fs.writeFileSync(path.join(t.context.tmp, 'nodir/hello.js'), 'console.log("hello");');
+
+	await execa('./cli.js', [path.join(t.context.tmp, 'nodir/**/*'), path.join(t.context.tmp, 'dest'), '--nodir']);
+	t.is(read(t.context.tmp, 'nodir/hello.js'), read(t.context.tmp, 'dest/hello.js'));
+});
+
 test('rename filenames but not filepaths', async t => {
 	fs.mkdirSync(t.context.tmp);
 	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
