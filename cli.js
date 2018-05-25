@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const fn = require('cpy');
+const cpy = require('cpy');
 
 const cli = meow(`
 	Usage
@@ -22,15 +22,30 @@ const cli = meow(`
 	  Copy all .html files inside src folder into dist and preserve path structure
 	  $ cpy '**/*.html' '../dist/' --cwd=src --parents
 `, {
-	string: ['_']
+	flags: {
+		overwrite: {
+			type: 'boolean',
+			default: true
+		},
+		parents: {
+			type: 'boolean',
+			default: false
+		},
+		cwd: {
+			type: 'string',
+			default: process.cwd()
+		},
+		rename: {
+			type: 'string'
+		}
+	}
 });
 
-fn(cli.input, cli.input.pop(), {
-	cwd: cli.flags.cwd || process.cwd(),
+cpy(cli.input, cli.input.pop(), {
+	cwd: cli.flags.cwd,
 	rename: cli.flags.rename,
 	parents: cli.flags.parents,
-	overwrite: cli.flags.overwrite !== false,
-	nonull: true
+	overwrite: cli.flags.overwrite
 }).catch(err => {
 	if (err.name === 'CpyError') {
 		console.error(err.message);

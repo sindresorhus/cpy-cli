@@ -1,65 +1,62 @@
 {
-  "name": "cpy-cli",
-  "version": "1.0.1",
-  "description": "Copy files",
-  "license": "MIT",
-  "repository": "sindresorhus/cpy-cli",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "maintainers": [
-    {
-      "name": "Michael Mayer",
-      "email": "michael@schnittstabil.de",
-      "url": "schnittstabil.de"
-    }
-  ],
-  "bin": {
-    "cpy": "cli.js"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "cli.js"
-  ],
-  "keywords": [
-    "cli-app",
-    "cli",
-    "copy",
-    "cp",
-    "cpy",
-    "file",
-    "files",
-    "clone",
-    "fs",
-    "stream",
-    "glob",
-    "file-system",
-    "ncp",
-    "fast",
-    "quick",
-    "data",
-    "content",
-    "contents"
-  ],
-  "dependencies": {
-    "cpy": "^4.0.0",
-    "meow": "^3.6.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "execa": "^0.4.0",
-    "path-exists": "^3.0.0",
-    "tempfile": "^1.1.1",
-    "xo": "*"
-  },
-  "xo": {
-    "esnext": true
-  }
+	"name": "cpy-cli",
+	"version": "1.0.1",
+	"description": "Copy files",
+	"license": "MIT",
+	"repository": "sindresorhus/cpy-cli",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"maintainers": [
+		{
+			"name": "Michael Mayer",
+			"email": "michael@schnittstabil.de",
+			"url": "schnittstabil.de"
+		}
+	],
+	"bin": {
+		"cpy": "cli.js"
+	},
+	"engines": {
+		"node": ">=6"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"cli.js"
+	],
+	"keywords": [
+		"cli-app",
+		"cli",
+		"copy",
+		"cp",
+		"cpy",
+		"file",
+		"files",
+		"clone",
+		"fs",
+		"stream",
+		"glob",
+		"file-system",
+		"ncp",
+		"fast",
+		"quick",
+		"data",
+		"content",
+		"contents"
+	],
+	"dependencies": {
+		"cpy": "^7.0.0",
+		"meow": "^5.0.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"execa": "^0.10.0",
+		"path-exists": "^3.0.0",
+		"tempfile": "^2.0.0",
+		"xo": "*"
+	}
 }
