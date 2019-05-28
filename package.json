@@ -20,7 +20,7 @@
 		"cpy": "cli.js"
 	},
 	"engines": {
-		"node": ">=6"
+		"node": ">=8"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -49,14 +49,14 @@
 		"contents"
 	],
 	"dependencies": {
-		"cpy": "^7.0.0",
+		"cpy": "^7.2.0",
 		"meow": "^5.0.0"
 	},
 	"devDependencies": {
-		"ava": "*",
-		"execa": "^0.10.0",
-		"path-exists": "^3.0.0",
-		"tempfile": "^2.0.0",
-		"xo": "*"
+		"ava": "^1.4.1",
+		"execa": "^1.0.0",
+		"path-exists": "^4.0.0",
+		"tempfile": "^3.0.0",
+		"xo": "^0.24.0"
 	}
 }

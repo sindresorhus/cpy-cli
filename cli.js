@@ -5,7 +5,7 @@ const cpy = require('cpy');
 
 const cli = meow(`
 	Usage
-	  $ cpy <source>... <destination>
+	  $ cpy <source …> <destination>
 
 	Options
 	  --no-overwrite       Don't overwrite the destination
@@ -41,16 +41,21 @@ const cli = meow(`
 	}
 });
 
-cpy(cli.input, cli.input.pop(), {
-	cwd: cli.flags.cwd,
-	rename: cli.flags.rename,
-	parents: cli.flags.parents,
-	overwrite: cli.flags.overwrite
-}).catch(err => {
-	if (err.name === 'CpyError') {
-		console.error(err.message);
-		process.exit(1);
-	} else {
-		throw err;
+(async () => {
+	try {
+		await cpy(cli.input, cli.input.pop(), {
+			cwd: cli.flags.cwd,
+			rename: cli.flags.rename,
+			parents: cli.flags.parents,
+			overwrite: cli.flags.overwrite
+		});
+	} catch (error) {
+		if (error.name === 'CpyError') {
+			console.error(error.message);
+			process.exit(1);
+		} else {
+			throw error;
+		}
 	}
-});
+})();
+

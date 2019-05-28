@@ -12,12 +12,12 @@ test.beforeEach(t => {
 });
 
 test('missing file operands', async t => {
-	await t.throws(execa('./cli.js'), /`files` and `destination` required/);
+	await t.throwsAsync(execa('./cli.js'), /`files` and `destination` required/);
 });
 
 // TODO: Blocked by https://github.com/mrmlnc/fast-glob/issues/110
 test.failing('source file does not exist', async t => {
-	await t.throws(execa('./cli.js', [path.join(t.context.tmp, 'nonexistentfile'), t.context.tmp]), /nonexistentfile/);
+	await t.throwsAsync(execa('./cli.js', [path.join(t.context.tmp, 'nonexistentfile'), t.context.tmp]), /nonexistentfile/);
 });
 
 test('cwd', async t => {

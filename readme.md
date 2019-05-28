@@ -24,7 +24,7 @@ $ npm install --global cpy-cli
 $ cpy --help
 
   Usage
-    $ cpy <source>... <destination>
+    $ cpy <source …> <destination>
 
   Options
     --no-overwrite       Don't overwrite the destination
@@ -46,8 +46,3 @@ $ cpy --help
 ## Related
 
 - [cpy](https://github.com/sindresorhus/cpy) - API for this module
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
