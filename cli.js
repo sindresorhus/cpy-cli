@@ -42,7 +42,7 @@ const cli = meow(`
 		dot: {
 			type: 'boolean',
 			default: false
-		}		
+		}
 	}
 });
 
