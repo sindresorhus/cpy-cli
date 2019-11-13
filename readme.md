@@ -31,6 +31,7 @@ $ cpy --help
     --parents            Preserve path structure
     --cwd=<dir>          Working directory for files
     --rename=<filename>  Rename all <source> filenames to <filename>
+    --dot                Allow patterns to match entries that begin with a period (.)
 
   <source> can contain globs if quoted
 
