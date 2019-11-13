@@ -12,6 +12,7 @@ const cli = meow(`
 	  --parents            Preserve path structure
 	  --cwd=<dir>          Working directory for files
 	  --rename=<filename>  Rename all <source> filenames to <filename>
+	  --dot                Allow patterns to match entries that begin with a period (.)
 
 	<source> can contain globs if quoted
 
@@ -37,7 +38,11 @@ const cli = meow(`
 		},
 		rename: {
 			type: 'string'
-		}
+		},
+		dot: {
+			type: 'boolean',
+			default: false
+		}		
 	}
 });
 
@@ -47,7 +52,8 @@ const cli = meow(`
 			cwd: cli.flags.cwd,
 			rename: cli.flags.rename,
 			parents: cli.flags.parents,
-			overwrite: cli.flags.overwrite
+			overwrite: cli.flags.overwrite,
+			dot: cli.flags.dot
 		});
 	} catch (error) {
 		if (error.name === 'CpyError') {
