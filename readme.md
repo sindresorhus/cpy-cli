@@ -2,7 +2,6 @@
 
 > Copy files
 
-
 ## Why
 
 - Fast by using streams.
@@ -10,13 +9,11 @@
 - User-friendly by accepting [globs](https://github.com/sindresorhus/globby#globbing-patterns) and creating non-existant destination directories.
 - User-friendly error messages.
 
-
 ## Install
 
 ```
 $ npm install --global cpy-cli
 ```
-
 
 ## Usage
 
@@ -41,7 +38,6 @@ $ cpy --help
     Copy all .html files inside src folder into dist and preserve path structure
     $ cpy '**/*.html' '../dist/' --cwd=src --parents
 ```
-
 
 ## Related
 

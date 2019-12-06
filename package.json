@@ -4,6 +4,7 @@
 	"description": "Copy files",
 	"license": "MIT",
 	"repository": "sindresorhus/cpy-cli",
+	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
@@ -49,14 +50,14 @@
 		"contents"
 	],
 	"dependencies": {
-		"cpy": "^7.2.0",
+		"cpy": "^8.0.0",
 		"meow": "^5.0.0"
 	},
 	"devDependencies": {
-		"ava": "^1.4.1",
+		"ava": "^2.4.0",
 		"execa": "^1.0.0",
 		"path-exists": "^4.0.0",
 		"tempfile": "^3.0.0",
-		"xo": "^0.24.0"
+		"xo": "^0.25.3"
 	}
 }
