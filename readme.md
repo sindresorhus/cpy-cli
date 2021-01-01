@@ -1,4 +1,4 @@
-# cpy-cli [![Build Status](https://travis-ci.org/sindresorhus/cpy-cli.svg?branch=master)](https://travis-ci.org/sindresorhus/cpy-cli)
+# cpy-cli
 
 > Copy files
 
