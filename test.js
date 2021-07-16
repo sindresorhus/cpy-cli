@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import test from 'ava';
 import tempfile from 'tempfile';
 import execa from 'execa';
@@ -12,11 +12,11 @@ test.beforeEach(t => {
 });
 
 test('missing file operands', async t => {
-	await t.throwsAsync(execa('./cli.js'), /`source` and `destination` required/);
+	await t.throwsAsync(execa('./cli.js'), {message: /`source` and `destination` required/});
 });
 
 test('source file does not exist', async t => {
-	await t.throwsAsync(execa('./cli.js', [path.join(t.context.tmp, 'nonexistentfile'), t.context.tmp]), /nonexistentfile/);
+	await t.throwsAsync(execa('./cli.js', [path.join(t.context.tmp, 'nonexistentfile'), t.context.tmp]), {message: /nonexistentfile/});
 });
 
 test('cwd', async t => {
