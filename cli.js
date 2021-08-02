@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-const meow = require('meow');
-const cpy = require('cpy');
+import meow from 'meow';
+import cpy from 'cpy';
 
 const cli = meow(`
 	Usage
@@ -9,10 +9,11 @@ const cli = meow(`
 
 	Options
 	  --no-overwrite       Don't overwrite the destination
-	  --parents            Preserve path structure
+	  --no-flat            Preserve path structure
 	  --cwd=<dir>          Working directory for files
 	  --rename=<filename>  Rename all <source> filenames to <filename>
 	  --dot                Allow patterns to match entries that begin with a period (.)
+	  --up                 Trim path from files being copied
 
 	<source> can contain globs if quoted
 
@@ -21,16 +22,17 @@ const cli = meow(`
 	  $ cpy 'src/*.png' '!src/goat.png' dist
 
 	  Copy all .html files inside src folder into dist and preserve path structure
-	  $ cpy '**/*.html' '../dist/' --cwd=src --parents
+	  $ cpy '**/*.html' '../dist/' --cwd=src --no-flat
 `, {
+	importMeta: import.meta,
 	flags: {
 		overwrite: {
 			type: 'boolean',
 			default: true
 		},
-		parents: {
+		flat: {
 			type: 'boolean',
-			default: false
+			default: true
 		},
 		cwd: {
 			type: 'string',
@@ -42,6 +44,10 @@ const cli = meow(`
 		dot: {
 			type: 'boolean',
 			default: false
+		},
+		up: {
+			type: 'number',
+			default: 0
 		}
 	}
 });
@@ -51,9 +57,10 @@ const cli = meow(`
 		await cpy(cli.input, cli.input.pop(), {
 			cwd: cli.flags.cwd,
 			rename: cli.flags.rename,
-			parents: cli.flags.parents,
+			flat: cli.flags.flat,
 			overwrite: cli.flags.overwrite,
-			dot: cli.flags.dot
+			dot: cli.flags.dot,
+			up: cli.flags.up
 		});
 	} catch (error) {
 		if (error.name === 'CpyError') {

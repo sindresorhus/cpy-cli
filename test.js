@@ -29,12 +29,12 @@ test('cwd', async t => {
 	t.is(read(t.context.tmp, 'cwd/hello.js'), read(t.context.tmp, 'cwd/dest/hello.js'));
 });
 
-test('keep path structure with flag `--parents`', async t => {
+test('keep path structure with flag `--no-flat`', async t => {
 	fs.mkdirSync(t.context.tmp);
 	fs.mkdirSync(path.join(t.context.tmp, 'cwd'));
 	fs.writeFileSync(path.join(t.context.tmp, 'cwd/hello.js'), 'console.log("hello");');
 
-	await execa('./cli.js', [path.join(t.context.tmp, 'cwd/hello.js'), t.context.tmp, '--parents']);
+	await execa('./cli.js', [path.join(t.context.tmp, 'cwd/hello.js'), t.context.tmp, '--no-flat']);
 
 	t.is(read(t.context.tmp, 'cwd/hello.js'), read(t.context.tmp, t.context.tmp, 'cwd/hello.js'));
 });

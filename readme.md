@@ -25,10 +25,11 @@ $ cpy --help
 
   Options
     --no-overwrite       Don't overwrite the destination
-    --parents            Preserve path structure
+    --no-flat            Preserve path structure
     --cwd=<dir>          Working directory for files
     --rename=<filename>  Rename all <source> filenames to <filename>
     --dot                Allow patterns to match entries that begin with a period (.)
+    --up                 Trim path from files being copied
 
   <source> can contain globs if quoted
 
@@ -37,7 +38,7 @@ $ cpy --help
     $ cpy 'src/*.png' '!src/goat.png' dist
 
     Copy all .html files inside src folder into dist and preserve path structure
-    $ cpy '**/*.html' '../dist/' --cwd=src --parents
+    $ cpy '**/*.html' '../dist/' --cwd=src --no-flat
 ```
 
 ## Related
