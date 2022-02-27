@@ -11,8 +11,8 @@
 
 ## Install
 
-```
-$ npm install --global cpy-cli
+```sh
+npm install --global cpy-cli
 ```
 
 ## Usage

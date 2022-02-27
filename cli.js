@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import process from 'node:process';
 import meow from 'meow';
 import cpy from 'cpy';
@@ -66,4 +65,3 @@ const cli = meow(`
 		}
 	}
 })();
-

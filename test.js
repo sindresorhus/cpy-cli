@@ -5,7 +5,7 @@ import tempfile from 'tempfile';
 import {execa} from 'execa';
 import {pathExistsSync} from 'path-exists';
 
-const read = (...args) => fs.readFileSync(path.join(...args), 'utf8');
+const read = (...arguments_) => fs.readFileSync(path.join(...arguments_), 'utf8');
 
 test.beforeEach(t => {
 	t.context.tmp = tempfile();
