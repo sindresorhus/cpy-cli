@@ -1,9 +1,9 @@
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import test from 'ava';
 import tempfile from 'tempfile';
-import execa from 'execa';
-import pathExists from 'path-exists';
+import {execa} from 'execa';
+import {pathExistsSync} from 'path-exists';
 
 const read = (...args) => fs.readFileSync(path.join(...args), 'utf8');
 
@@ -12,11 +12,11 @@ test.beforeEach(t => {
 });
 
 test('missing file operands', async t => {
-	await t.throwsAsync(execa('./cli.js'), /`source` and `destination` required/);
+	await t.throwsAsync(execa('./cli.js'), {message: /`source` and `destination` required/});
 });
 
 test('source file does not exist', async t => {
-	await t.throwsAsync(execa('./cli.js', [path.join(t.context.tmp, 'nonexistentfile'), t.context.tmp]), /nonexistentfile/);
+	await t.throwsAsync(execa('./cli.js', [path.join(t.context.tmp, 'nonexistentfile'), t.context.tmp]), {message: /nonexistentfile/});
 });
 
 test('cwd', async t => {
@@ -71,6 +71,6 @@ test('do not copy files in the negated glob patterns', async t => {
 	await execa('./cli.js', ['src/*.*', '!src/*.jsx', '!src/*.es2015', 'dest', '--cwd', t.context.tmp]);
 
 	t.is(read(t.context.tmp, 'dest/hello.js'), 'console.log("hello");');
-	t.false(pathExists.sync(path.join(t.context.tmp, 'dest/hello.jsx')));
-	t.false(pathExists.sync(path.join(t.context.tmp, 'dest/hello.es2015')));
+	t.false(pathExistsSync(path.join(t.context.tmp, 'dest/hello.jsx')));
+	t.false(pathExistsSync(path.join(t.context.tmp, 'dest/hello.es2015')));
 });
