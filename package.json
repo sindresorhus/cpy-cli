@@ -51,7 +51,7 @@
 		"contents"
 	],
 	"dependencies": {
-		"cpy": "^8.1.2",
+		"cpy": "^9.0.0",
 		"meow": "^10.1.2"
 	},
 	"devDependencies": {
