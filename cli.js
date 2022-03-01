@@ -9,10 +9,10 @@ const cli = meow(`
 
 	Options
 	  --no-overwrite       Don't overwrite the destination
-	  --parents            Preserve path structure
 	  --cwd=<dir>          Working directory for files
 	  --rename=<filename>  Rename all <source> filenames to <filename>
 	  --dot                Allow patterns to match entries that begin with a period (.)
+	  --flat               Flatten directory structure. All copied files will be put in the same directory.
 
 	<source> can contain globs if quoted
 
@@ -20,18 +20,14 @@ const cli = meow(`
 	  Copy all .png files in src folder into dist except src/goat.png
 	  $ cpy 'src/*.png' '!src/goat.png' dist
 
-	  Copy all .html files inside src folder into dist and preserve path structure
-	  $ cpy '**/*.html' '../dist/' --cwd=src --parents
+	  Copy all files inside src folder into dist and preserve path structure
+	  $ cpy . '../dist/' --cwd=src
 `, {
 	importMeta: import.meta,
 	flags: {
 		overwrite: {
 			type: 'boolean',
 			default: true,
-		},
-		parents: {
-			type: 'boolean',
-			default: false,
 		},
 		cwd: {
 			type: 'string',
@@ -44,6 +40,10 @@ const cli = meow(`
 			type: 'boolean',
 			default: false,
 		},
+		flat: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 });
 
@@ -52,9 +52,9 @@ const cli = meow(`
 		await cpy(cli.input, cli.input.pop(), {
 			cwd: cli.flags.cwd,
 			rename: cli.flags.rename,
-			parents: cli.flags.parents,
 			overwrite: cli.flags.overwrite,
 			dot: cli.flags.dot,
+			flat: cli.flags.flat,
 		});
 	} catch (error) {
 		if (error.name === 'CpyError') {
