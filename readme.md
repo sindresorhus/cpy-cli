@@ -29,6 +29,7 @@ $ cpy --help
     --rename=<filename>  Rename all <source> filenames to <filename>
     --dot                Allow patterns to match entries that begin with a period (.)
     --flat               Flatten directory structure. All copied files will be put in the same directory.
+    --no-ignore-junk     Don't ignore junk files like .DS_Store and Thumbs.db
 
   <source> can contain globs if quoted
 

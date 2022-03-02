@@ -101,3 +101,17 @@ test('flatten directory tree', async t => {
 		fs.existsSync(path.join(t.context.tmp, 'destination/subdir/baz.ts')),
 	);
 });
+
+test('don\'t ignore junk files', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'junk'));
+	fs.writeFileSync(path.join(t.context.tmp, 'junk/Thumbs.db'), 'lorem ipsum');
+	fs.writeFileSync(path.join(t.context.tmp, 'junk/.DS_Store'), 'lorem ipsum');
+
+	await execa('./cli.js', [path.join(t.context.tmp, 'junk'), t.context.tmp, '--no-ignore-junk']);
+
+	t.is(read(t.context.tmp, 'Thumbs.db'), 'lorem ipsum');
+	t.is(read(t.context.tmp, '.DS_Store'), 'lorem ipsum');
+	t.truthy(fs.existsSync(path.join(t.context.tmp, 'Thumbs.db')));
+	t.truthy(fs.existsSync(path.join(t.context.tmp, '.DS_Store')));
+});
