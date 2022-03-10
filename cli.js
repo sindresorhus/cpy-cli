@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import process from 'node:process';
+import os from 'node:os';
 import meow from 'meow';
 import cpy from 'cpy';
 
@@ -44,6 +45,10 @@ const cli = meow(`
 			type: 'boolean',
 			default: false,
 		},
+		concurrency: {
+			type: 'number',
+			default: (os.cpus().length || 1) * 2,
+		},
 	},
 });
 
@@ -55,6 +60,7 @@ const cli = meow(`
 			overwrite: cli.flags.overwrite,
 			dot: cli.flags.dot,
 			flat: cli.flags.flat,
+			concurrency: cli.flags.concurrency,
 		});
 	} catch (error) {
 		if (error.name === 'CpyError') {
