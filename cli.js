@@ -47,7 +47,7 @@ const cli = meow(`
 		},
 		concurrency: {
 			type: 'number',
-			default: (os.cpus().length || 1) * 2,
+			default: (os.cpus().length > 0 ? os.cpus().length : 1) * 2,
 		},
 	},
 });
