@@ -14,7 +14,7 @@ const cli = meow(`
 	  --rename=<filename>  Rename all <source> filenames to <filename>
 	  --dot                Allow patterns to match entries that begin with a period (.)
 	  --flat               Flatten directory structure. All copied files will be put in the same directory.
-	  --concurrency        Number of files being copied concurrently.
+	  --concurrency        Number of files being copied concurrently
 
 	<source> can contain globs if quoted
 
