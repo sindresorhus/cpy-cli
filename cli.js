@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import process from 'node:process';
+import os from 'node:os';
 import meow from 'meow';
 import cpy from 'cpy';
 
@@ -13,6 +14,7 @@ const cli = meow(`
 	  --rename=<filename>  Rename all <source> filenames to <filename>
 	  --dot                Allow patterns to match entries that begin with a period (.)
 	  --flat               Flatten directory structure. All copied files will be put in the same directory.
+	  --concurrency        Number of files being copied concurrently
 
 	<source> can contain globs if quoted
 
@@ -44,6 +46,10 @@ const cli = meow(`
 			type: 'boolean',
 			default: false,
 		},
+		concurrency: {
+			type: 'number',
+			default: (os.cpus().length > 0 ? os.cpus().length : 1) * 2,
+		},
 	},
 });
 
@@ -55,6 +61,7 @@ const cli = meow(`
 			overwrite: cli.flags.overwrite,
 			dot: cli.flags.dot,
 			flat: cli.flags.flat,
+			concurrency: cli.flags.concurrency,
 		});
 	} catch (error) {
 		if (error.name === 'CpyError') {
