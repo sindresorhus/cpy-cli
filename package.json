@@ -17,13 +17,13 @@
 			"url": "schnittstabil.de"
 		}
 	],
+	"type": "module",
 	"bin": {
 		"cpy": "cli.js"
 	},
 	"engines": {
 		"node": ">=12.20"
 	},
-	"type": "module",
 	"scripts": {
 		"test": "xo && ava"
 	},
