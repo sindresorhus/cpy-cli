@@ -55,6 +55,12 @@ const cli = meow(`
 
 (async () => {
 	try {
+		const {rename} = cli.flags;
+		const renameReg = /{{(\s*)?basename(\s*)?}}/;
+		if (rename && renameReg.test(rename)) {
+			cli.flags.rename = basename => rename.replace(renameReg, basename);
+		}
+
 		await cpy(cli.input, cli.input.pop(), {
 			cwd: cli.flags.cwd,
 			rename: cli.flags.rename,
