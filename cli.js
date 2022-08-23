@@ -11,7 +11,7 @@ const cli = meow(`
 	Options
 	  --no-overwrite       Don't overwrite the destination
 	  --cwd=<dir>          Working directory for files
-	  --rename=<filename>  Rename all <source> filenames to <filename>
+	  --rename=<filename>  Rename all <source> filenames to <filename>. Supports string templates.
 	  --dot                Allow patterns to match entries that begin with a period (.)
 	  --flat               Flatten directory structure. All copied files will be put in the same directory.
 	  --concurrency        Number of files being copied concurrently
@@ -24,6 +24,9 @@ const cli = meow(`
 
 	  Copy all files inside src folder into dist and preserve path structure
 	  $ cpy . '../dist/' --cwd=src
+
+	  Copy all .png files in the src folder to dist and prefix the image filenames
+	  $ cpy 'src/*.png' dist --cwd=src --rename=hi-{{basename}}
 `, {
 	importMeta: import.meta,
 	flags: {
@@ -55,6 +58,12 @@ const cli = meow(`
 
 (async () => {
 	try {
+		const {rename} = cli.flags;
+		const stringTemplate = '{{basename}}';
+		if (rename && rename.includes(stringTemplate)) {
+			cli.flags.rename = basename => rename.replace(stringTemplate, basename);
+		}
+
 		await cpy(cli.input, cli.input.pop(), {
 			cwd: cli.flags.cwd,
 			rename: cli.flags.rename,

@@ -51,6 +51,9 @@ test('rename filenames but not filepaths', async t => {
 	await execa('./cli.js', [path.join(t.context.tmp, 'hello.js'), path.join(t.context.tmp, 'dest'), '--rename=hi.js']);
 
 	t.is(read(t.context.tmp, 'hello.js'), read(t.context.tmp, 'dest/hi.js'));
+
+	await execa('./cli.js', [path.join(t.context.tmp, 'hello.js'), path.join(t.context.tmp, 'dest'), '--rename=hi-{{basename}}-1']);
+	t.is(read(t.context.tmp, 'hello.js'), read(t.context.tmp, 'dest/hi-hello-1.js'));
 });
 
 test('overwrite files by default', async t => {
