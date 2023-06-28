@@ -56,28 +56,31 @@ const cli = meow(`
 	},
 });
 
-(async () => {
-	try {
-		const {rename} = cli.flags;
-		const stringTemplate = '{{basename}}';
-		if (rename && rename.includes(stringTemplate)) {
-			cli.flags.rename = basename => rename.replace(stringTemplate, basename);
-		}
-
-		await cpy(cli.input, cli.input.pop(), {
-			cwd: cli.flags.cwd,
-			rename: cli.flags.rename,
-			overwrite: cli.flags.overwrite,
-			dot: cli.flags.dot,
-			flat: cli.flags.flat,
-			concurrency: cli.flags.concurrency,
-		});
-	} catch (error) {
-		if (error.name === 'CpyError') {
-			console.error(error.message);
-			process.exit(1);
-		} else {
-			throw error;
-		}
+try {
+	const {rename} = cli.flags;
+	const stringTemplate = '{{basename}}';
+	if (rename?.includes(stringTemplate)) {
+		cli.flags.rename = basename => {
+			const parts = basename.split('.');
+			const fileExtension = parts.length > 1 ? `.${parts.pop()}` : '';
+			const nameWithoutExtension = parts.join('.');
+			return rename.replace(stringTemplate, nameWithoutExtension) + fileExtension;
+		};
 	}
-})();
+
+	await cpy(cli.input, cli.input.pop(), {
+		cwd: cli.flags.cwd,
+		rename: cli.flags.rename,
+		overwrite: cli.flags.overwrite,
+		dot: cli.flags.dot,
+		flat: cli.flags.flat,
+		concurrency: cli.flags.concurrency,
+	});
+} catch (error) {
+	if (error.name === 'CpyError') {
+		console.error(error.message);
+		process.exit(1);
+	} else {
+		throw error;
+	}
+}
