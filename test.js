@@ -56,6 +56,16 @@ test('rename filenames but not filepaths', async t => {
 	t.is(read(t.context.tmp, 'hello.js'), read(t.context.tmp, 'dest/hi-hello-1.js'));
 });
 
+test('rename with multiple placeholders', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
+	fs.writeFileSync(path.join(t.context.tmp, 'hello.js'), 'console.log("hello");');
+
+	await execa('./cli.js', [path.join(t.context.tmp, 'hello.js'), path.join(t.context.tmp, 'dest'), '--rename={{basename}}-copy-{{basename}}']);
+
+	t.is(read(t.context.tmp, 'dest/hello-copy-hello.js'), 'console.log("hello");');
+});
+
 test('overwrite files by default', async t => {
 	fs.mkdirSync(t.context.tmp);
 	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
@@ -65,6 +75,21 @@ test('overwrite files by default', async t => {
 	await execa('./cli.js', [path.join(t.context.tmp, 'hello.js'), path.join(t.context.tmp, 'dest')]);
 
 	t.is(read(t.context.tmp, 'dest/hello.js'), 'console.log("hello");');
+});
+
+test('do not overwrite when --no-overwrite is set', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
+	fs.writeFileSync(path.join(t.context.tmp, 'hello.js'), 'console.log("hello");');
+	fs.writeFileSync(path.join(t.context.tmp, 'dest/hello.js'), 'console.log("world");');
+
+	await t.throwsAsync(
+		execa('./cli.js', [path.join(t.context.tmp, 'hello.js'), path.join(t.context.tmp, 'dest'), '--no-overwrite']),
+		{message: /EEXIST|already exists/},
+	);
+
+	// Verify destination content was not overwritten
+	t.is(read(t.context.tmp, 'dest/hello.js'), 'console.log("world");');
 });
 
 test('do not copy files in the negated glob patterns', async t => {
@@ -100,7 +125,64 @@ test('flatten directory tree', async t => {
 		read(t.context.tmp, 'source/bar.js'),
 		read(t.context.tmp, 'destination/subdir/bar.js'),
 	);
-	t.falsy(
-		fs.existsSync(path.join(t.context.tmp, 'destination/subdir/baz.ts')),
-	);
+	t.falsy(fs.existsSync(path.join(t.context.tmp, 'destination/subdir/baz.ts')));
+});
+
+test('copy directory as source (preserves structure)', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'src'));
+	fs.mkdirSync(path.join(t.context.tmp, 'src', 'nested'));
+	fs.writeFileSync(path.join(t.context.tmp, 'src/file.txt'), 'content');
+	fs.writeFileSync(path.join(t.context.tmp, 'src/nested/file2.txt'), 'content2');
+
+	await execa('./cli.js', ['src', 'out', '--cwd', t.context.tmp]);
+
+	t.is(read(t.context.tmp, 'src/file.txt'), read(t.context.tmp, 'out/src/file.txt'));
+	t.is(read(t.context.tmp, 'src/nested/file2.txt'), read(t.context.tmp, 'out/src/nested/file2.txt'));
+});
+
+test('junk files ignored even with --dot', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'src'));
+	fs.writeFileSync(path.join(t.context.tmp, 'src/.DS_Store'), 'junk');
+	fs.writeFileSync(path.join(t.context.tmp, 'src/.ok'), 'ok');
+
+	await execa('./cli.js', ['**/*', path.join(t.context.tmp, 'dest'), '--cwd', path.join(t.context.tmp, 'src'), '--dot']);
+
+	t.true(pathExistsSync(path.join(t.context.tmp, 'dest/.ok')));
+	t.false(pathExistsSync(path.join(t.context.tmp, 'dest/.DS_Store')));
+});
+
+test('rename template with dotfile', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
+	fs.writeFileSync(path.join(t.context.tmp, '.gitignore'), 'foo');
+
+	await execa('./cli.js', [path.join(t.context.tmp, '.gitignore'), path.join(t.context.tmp, 'dest'), '--rename=hi-{{basename}}', '--dot']);
+
+	t.true(pathExistsSync(path.join(t.context.tmp, 'dest/hi-.gitignore')));
+});
+
+test('dotfiles included with --dot flag', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'src'));
+	fs.writeFileSync(path.join(t.context.tmp, 'src/.hidden'), 'dotfile');
+	fs.writeFileSync(path.join(t.context.tmp, 'src/visible.txt'), 'visible');
+
+	await execa('./cli.js', ['**/*', path.join(t.context.tmp, 'dest'), '--cwd', path.join(t.context.tmp, 'src'), '--dot']);
+
+	t.true(pathExistsSync(path.join(t.context.tmp, 'dest/visible.txt')));
+	t.true(pathExistsSync(path.join(t.context.tmp, 'dest/.hidden')));
+});
+
+test('multiple source files', async t => {
+	fs.mkdirSync(t.context.tmp);
+	fs.mkdirSync(path.join(t.context.tmp, 'dest'));
+	fs.writeFileSync(path.join(t.context.tmp, 'a.txt'), 'A');
+	fs.writeFileSync(path.join(t.context.tmp, 'b.txt'), 'B');
+
+	await execa('./cli.js', [path.join(t.context.tmp, 'a.txt'), path.join(t.context.tmp, 'b.txt'), path.join(t.context.tmp, 'dest')]);
+
+	t.is(read(t.context.tmp, 'dest/a.txt'), 'A');
+	t.is(read(t.context.tmp, 'dest/b.txt'), 'B');
 });

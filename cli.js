@@ -64,7 +64,7 @@ try {
 			const parts = basename.split('.');
 			const fileExtension = parts.length > 1 ? `.${parts.pop()}` : '';
 			const nameWithoutExtension = parts.join('.');
-			return rename.replace(stringTemplate, nameWithoutExtension) + fileExtension;
+			return rename.replaceAll(stringTemplate, nameWithoutExtension) + fileExtension;
 		};
 	}
 

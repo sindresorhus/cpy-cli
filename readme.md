@@ -46,4 +46,4 @@ $ cpy --help
 
 ## Related
 
-- [cpy](https://github.com/sindresorhus/cpy) - API for this module
+- [cpy](https://github.com/sindresorhus/cpy) - API for this package
